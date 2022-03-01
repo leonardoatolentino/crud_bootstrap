@@ -1,6 +1,32 @@
 import React from "react"
 
+
+const stateInit = {
+  nome:'',
+  sku:'',
+  descricao:'',
+  preco:0,
+  fornecedor:'',
+}
+
 class CadastroProduto extends React.Component {
+
+  state = stateInit;
+
+  onChange = (event) =>{
+    const valor = event.target.value
+    const nomeCampo = event.target.name
+    this.setState({[nomeCampo]: valor})
+
+  }
+
+  onSubmit = (event) =>{
+    console.log(this.state);
+  }
+
+  limpaCampos = () =>{
+    this.setState(stateInit)
+  }
   
   render(){
     return(
@@ -8,8 +34,80 @@ class CadastroProduto extends React.Component {
         <div className="card-header">
             Cadastro de Produtos
         </div>
-        <div className="card-bady">
-
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label>Nome: *</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  value={this.state.nome}
+                  name='nome'
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label>SKU: *</label>
+                <input 
+                  name='sku'
+                  type="text" 
+                  className="form-control"
+                  value={this.state.sku}
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 mt-3">
+              <div className="form-group">
+                <label>Descrição:</label>
+                <textarea 
+                  name='descricao'
+                  className="form-control"
+                  value={this.state.descricao}
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label>Preço: *</label>
+                <input 
+                  name='preco'
+                  type="text" 
+                  className="form-control"
+                  value={this.state.preco}
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label>Fornecedor: *</label>
+                <input 
+                  name='fornecedor'
+                  type="text"
+                  className="form-control"
+                  value={this.state.fornecedor} 
+                  onChange={this.onChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-1">
+              <button onClick={this.onSubmit} className="btn btn-success mt-4">Salvar</button>
+            </div>
+            <div className="col-md-1">
+              <button onClick={this.limpaCampos} className="btn btn-primary mt-4">Limpar</button>
+            </div>
+          </div>
         </div>
       </div>
     )
