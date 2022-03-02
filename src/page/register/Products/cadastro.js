@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import ProdutoService from "../../../services/produtoService";
 
 
 const stateInit = {
@@ -7,11 +8,18 @@ const stateInit = {
   descricao:'',
   preco:0,
   fornecedor:'',
+  sucesso: false,
+  errors:[]
 }
 
 class CadastroProduto extends React.Component {
 
   state = stateInit;
+
+  constructor(){
+    super()
+    this.service = new ProdutoService
+  }
 
   onChange = (event) =>{
     const valor = event.target.value
@@ -21,7 +29,23 @@ class CadastroProduto extends React.Component {
   }
 
   onSubmit = (event) =>{
-    console.log(this.state);
+
+    const  produto = {
+      nome: this.state.nome,
+      sku:this.state.sku,
+      descricao: this.state.descricao,
+      preco: this.state.preco,
+      fornecedor: this.state.fornecedor
+    }
+    try{
+      this.service.salvar(produto);
+      this.limpaCampos();
+      this.setState({sucesso: true});
+    }catch(erro){
+      const errors = erro.errors;
+      this.setState({errors: errors});
+    }
+    
   }
 
   limpaCampos = () =>{
@@ -35,6 +59,23 @@ class CadastroProduto extends React.Component {
             Cadastro de Produtos
         </div>
         <div className="card-body">
+        { this.state.sucesso &&
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Bem feito!</strong> Cadastro  realizado com sucesso!
+          </div>
+        }
+        { this.state.errors.length > 0 &&
+
+          this.state.errors.map( msg => {
+            return(
+              <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>Error!</strong> {msg}
+              </div>
+            )
+          })
+        }
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
