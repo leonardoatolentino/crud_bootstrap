@@ -1,16 +1,16 @@
 import React from "react";
 
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Home from "./page/home";
 import CadastroProduto from "./page/register/Products/cadastro";
+import  ConsultaProdutos  from "./page/register/Products/consulta";
 
-export default () =>{
+export default () => {
   return(
-    <HashRouter>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route  path="/cadastro-produtos" component={CadastroProduto} />
+        <Route exact path="/cadastro-produtos/:sku?" component={CadastroProduto} />
+        <Route exact path="/consulta-produtos" component={ConsultaProdutos} />
       </Switch>
-    </HashRouter>
   )
 }

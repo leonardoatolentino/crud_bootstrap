@@ -1,5 +1,6 @@
 import React from "react";
 import ProdutoService from "../../../services/produtoService";
+import { withRouter } from "react-router-dom";
 
 
 const stateInit = {
@@ -18,7 +19,7 @@ class CadastroProduto extends React.Component {
 
   constructor(){
     super()
-    this.service = new ProdutoService
+    this.service = new ProdutoService()
   }
 
   onChange = (event) =>{
@@ -50,6 +51,18 @@ class CadastroProduto extends React.Component {
 
   limpaCampos = () =>{
     this.setState(stateInit)
+  }
+
+  componentDidMount(){
+    const sku = this.props.match.params.sku;
+
+    if(sku){
+      const resultado = this.service.obterProduto().filter(produto => produto.sku === sku);
+      if (resultado.length ===1){
+        const produtoEncontrado = resultado[0]
+        this.setState({...produtoEncontrado});
+      }
+    }
   }
   
   render(){
@@ -156,4 +169,4 @@ class CadastroProduto extends React.Component {
 
 }
 
-export default CadastroProduto;
+export default withRouter(CadastroProduto);
