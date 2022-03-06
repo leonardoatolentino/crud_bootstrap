@@ -1,7 +1,7 @@
 import React from "react";
 import ProdutoService from "../../../services/produtoService";
 import { withRouter } from "react-router-dom";
-
+import Card from "../../../components/card";
 
 const stateInit = {
   nome:'',
@@ -10,7 +10,8 @@ const stateInit = {
   preco:0,
   fornecedor:'',
   sucesso: false,
-  errors:[]
+  errors:[],
+  atualizando: false
 }
 
 class CadastroProduto extends React.Component {
@@ -60,18 +61,15 @@ class CadastroProduto extends React.Component {
       const resultado = this.service.obterProduto().filter(produto => produto.sku === sku);
       if (resultado.length ===1){
         const produtoEncontrado = resultado[0]
-        this.setState({...produtoEncontrado});
+        this.setState({...produtoEncontrado, atualizando: true});
       }
     }
   }
   
   render(){
     return(
-      <div className="card">
-        <div className="card-header">
-            Cadastro de Produtos
-        </div>
-        <div className="card-body">
+      <Card header={this.state.atualizando ? 'Atualização de Produto' : 'Cadastros de Produtos' }>
+
         { this.state.sucesso &&
           <div class="alert alert-dismissible alert-success">
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -107,6 +105,7 @@ class CadastroProduto extends React.Component {
                 <label>SKU: *</label>
                 <input 
                   name='sku'
+                  disabled={this.state.atualizando}
                   type="text" 
                   className="form-control"
                   value={this.state.sku}
@@ -154,16 +153,19 @@ class CadastroProduto extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-1">
-              <button onClick={this.onSubmit} className="btn btn-success mt-4">Salvar</button>
+          <div className="row mt-4">
+            <div className="col-md-2">
+              <button 
+                onClick={this.onSubmit} 
+                className="btn btn-success"
+                >{this.state.atualizando ? 'Atualizar' : 'Salvar'}
+              </button>
             </div>
-            <div className="col-md-1">
-              <button onClick={this.limpaCampos} className="btn btn-primary mt-4">Limpar</button>
+            <div className="col-md-2">
+              <button onClick={this.limpaCampos} className="btn btn-primary">Limpar</button>
             </div>
           </div>
-        </div>
-      </div>
+      </Card>
     )
   }
 

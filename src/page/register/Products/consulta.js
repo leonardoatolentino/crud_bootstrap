@@ -1,6 +1,7 @@
 import React from "react";
 import ProdutoService from "../../../services/produtoService";
 import { withRouter } from "react-router-dom";
+import Card from "../../../components/card";
 
 class ConsultaProdutos extends React.Component{
 
@@ -24,13 +25,17 @@ class ConsultaProdutos extends React.Component{
     this.props.history.push(`/cadastro-produtos/${sku}`);
   }
 
+  deletar = (sku) =>{
+    const produtos = this.service.deletar(sku);
+    this.setState({produtos});
+    console.log(produtos);
+    
+  }
+
   render(){
     return(
-      <div className="card">
-        <div className="card-header">
-            Consulta Produtos
-        </div>
-        <div className="card-body">
+      <Card header="Consulta Produtos">
+        
           <table className="table table-hover ml-2">
             <thead>
               <tr>
@@ -51,10 +56,18 @@ class ConsultaProdutos extends React.Component{
                       <th>{produto.preco}</th>
                       <th>{produto.fornecedor}</th>
                       <th>
-                        <button onClick={ () => this.preparaEditar(produto.sku)} className="btn btn-primary">Editar</button>
+                        <button 
+                          onClick={ () => this.preparaEditar(produto.sku)} 
+                          className="btn btn-primary"
+                          >Editar
+                        </button>
                       </th>
                       <th> 
-                        <button className="btn btn-danger">Remover</button>
+                        <button 
+                          className="btn btn-danger"
+                          onClick={ () => this.deletar(produto.sku)}
+                          >Remover
+                        </button>
                       </th>
                     </tr>
                   )
@@ -62,8 +75,7 @@ class ConsultaProdutos extends React.Component{
               }
             </tbody>
         </table>
-      </div> 
-     </div> 
+     </Card> 
   )}
 }
 
